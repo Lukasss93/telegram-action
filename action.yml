@@ -1,0 +1,16 @@
+name: 'Telegram Action'
+description: 'Notify via Telegram!'
+author: 'Luca Patera'
+inputs:
+  footer:
+    description: 'Message footer'
+    required: fase
+  message:
+    description: 'Override default message'
+    required: false
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
+  icon: 'message-square'
+  color: 'blue'
