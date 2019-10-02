@@ -1,4 +1,4 @@
-name: 'Telegram Action'
+name: 'Notify Telegram Action'
 description: 'Notify via Telegram!'
 author: 'Luca Patera'
 inputs:
