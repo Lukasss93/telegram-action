@@ -42,8 +42,6 @@ function empty (value) {
     
     //initialize message
     let buildMessage = "";
-  
-    console.log(`The event payload: ${JSON.stringify(payload)}`);
     
     //elaborate event
     switch (event) {
@@ -54,10 +52,7 @@ function empty (value) {
           commits.push({
             sha: commit.id,
             url: `${repo_link}/commit/${commit.id}`,
-            message: commit.message,
-            added: commit.added ? commit.added.length : 0,
-            modified: commit.modified ? commit.modified.length : 0,
-            removed: commit.removed ? commit.removed.length : 0
+            message: commit.message
           });
         }
         
@@ -74,11 +69,8 @@ function empty (value) {
             sha = sha.substring(0, 7);
           }
           
-          let files = commit.added + commit.modified + commit.removed;
-          
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
-          buildMessage += ` • <a href="${commit.url}">${sha}</a>`;
-          buildMessage += ` • ${files} file${files !== 1 ? "s" : ""}\n`;
+          buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
           buildMessage += commit.message;
           
           if (i < commits.length - 1) {
@@ -123,8 +115,6 @@ function empty (value) {
         "a": ["href"]
       }
     });
-    
-    console.log(buildMessage);
     
     buildMessage = buildMessage.replace(/<li>/g, "- "); console.log(buildMessage);
     buildMessage = buildMessage.replace(/<\/li>\n?/g, "\n"); console.log(buildMessage);

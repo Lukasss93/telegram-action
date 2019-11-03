@@ -55,14 +55,12 @@ You can pass the following optional inputs:
 ##### For Push
 
 ```
-author/repo¹ • hash² • n³ files
+author/repo¹ • hash²
 Commit message
 ```
 >¹ with repo link
 >
 >² with hash link 
->
->³ total number of created/edited/deleted files
 
 *It supports multiple commits in a unique message.*
 
