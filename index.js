@@ -42,6 +42,8 @@ function empty (value) {
     
     //initialize message
     let buildMessage = "";
+  
+    console.log(`The event payload: ${JSON.stringify(payload)}`);
     
     //elaborate event
     switch (event) {
