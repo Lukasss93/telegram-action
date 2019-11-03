@@ -55,9 +55,9 @@ function empty (value) {
             sha: commit.id,
             url: `${repo_link}/commit/${commit.id}`,
             message: commit.message,
-            added: commit.added.length,
-            modified: commit.modified.length,
-            removed: commit.removed.length
+            added: commit.added ? commit.added.length : 0,
+            modified: commit.modified ? commit.modified.length : 0,
+            removed: commit.removed ? commit.removed.length : 0
           });
         }
         
