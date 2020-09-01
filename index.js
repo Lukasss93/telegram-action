@@ -47,14 +47,13 @@ function empty(value) {
     switch (event) {
       case "push":
         //get commits
-        let commits = [];
-        for (let commit of payload.commits) {
-          commits.push({
+        let commits = payload.commits.map(commit => {
+          return {
             sha: commit.id,
             url: `${repo_link}/commit/${commit.id}`,
             message: commit.message
-          });
-        }
+          }
+        });
 
         //check if no commits
         if (commits.length === 0) {
