@@ -17,7 +17,7 @@ const icons = {
   success: "✅",
 };
 
-(async () => {
+const main = async () => {
   try {
     //get payload
     const payload = github.context.payload;
@@ -144,4 +144,6 @@ const icons = {
       core.setFailed(error.message);
     }
   }
-})();
+};
+
+main();
