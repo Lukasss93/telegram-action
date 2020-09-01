@@ -75,7 +75,7 @@ const main = async () => {
             sha = sha.substring(0, 7);
           }
 
-          let status = core.getInput('INPUT_STATUS')
+          let status = core.getInput('${{job.status}}')
           console.log('status',status)
           buildMessage += `${icons[status]} ${status}:`
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
