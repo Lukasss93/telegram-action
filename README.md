@@ -22,6 +22,8 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.telegram_token }}
           TELEGRAM_CHAT: ${{ secrets.telegram_chat }}
+        with: 
+          STATUS: ${{job.status}} # this is required for accessing the status of certain job
 ```
 
 You can pass the following optional inputs:
