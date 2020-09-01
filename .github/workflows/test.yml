@@ -21,6 +21,6 @@ jobs:
         uses: ozanerturk/telegram-action@master
         if: always()
         env:
-          TELEGRAM_TOKEN: TEST
-          TELEGRAM_CHAT: TEST
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
 
