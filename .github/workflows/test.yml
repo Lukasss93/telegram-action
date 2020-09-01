@@ -25,6 +25,8 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
           TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+        with:
+           STATUS: ${{job.status}}  
   fail:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -40,5 +42,7 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
           TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
-          STATUS: ${{job.status}}
+        with:
+           STATUS: ${{job.status}}    
+         
 
