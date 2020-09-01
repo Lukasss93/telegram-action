@@ -17,6 +17,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+      - name: Run success
         run: node test/success.js
       - name: Send message to Telegram
         uses: ozanerturk/telegram-action@master
@@ -31,6 +32,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+      - name: Run fail
       - run: node test/fail.js
       - name: Send message to Telegram
         uses: ozanerturk/telegram-action@master
