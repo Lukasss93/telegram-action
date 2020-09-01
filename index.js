@@ -11,6 +11,12 @@ function empty(value) {
   return value === null || value === undefined || value === [] || value === {} || value === false || value === 0 || value === "";
 }
 
+const icons = {
+  failure:   "❗",
+  cancelled: "❕",
+  success:   "✅",
+}
+
 (async () => {
   try {
     //get payload
@@ -68,6 +74,7 @@ function empty(value) {
             sha = sha.substring(0, 7);
           }
 
+          buildMessage+=`${icons[job.status]} ${job.status}:`
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
           buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
           buildMessage += commit.message;
