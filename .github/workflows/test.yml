@@ -40,4 +40,5 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
           TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+          STATUS: ${{job.status}}
 
