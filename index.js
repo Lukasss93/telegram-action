@@ -73,7 +73,7 @@ const icons = {
           if (sha.length > 7) {
             sha = sha.substring(0, 7);
           }
-          console.log('here'+ JSON.stringify(payload))
+          console.log('here'+ JSON.stringify(payload));
           buildMessage+=`${icons[payload.job.status]} ${payload.job.status}:`
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
           buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
