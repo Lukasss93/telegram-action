@@ -8,6 +8,9 @@ inputs:
   message:
     description: 'Override default message'
     required: false
+  STATUS:
+    description: 'Job status'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
