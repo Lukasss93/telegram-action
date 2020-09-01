@@ -10,13 +10,30 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  test:
+  success:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+      - name: Run success
+        run: node test/success.js
+      - name: Send message to Telegram
+        uses: ozanerturk/telegram-action@master
+        if: always()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+  fail:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run fail
+        run: node test/fail.js
       - name: Send message to Telegram
         uses: ozanerturk/telegram-action@master
         if: always()
