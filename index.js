@@ -74,8 +74,8 @@ const main = async () => {
           if (sha.length > 7) {
             sha = sha.substring(0, 7);
           }
-          let status = core.getInput('STATUS',{required:true})
-          buildMessage += `${icons[status]} ${status}:`
+          let status = core.getInput('STATUS', { required: true })
+          buildMessage += `${icons[status]} ${status}: `
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
           buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
           buildMessage += commit.message;
