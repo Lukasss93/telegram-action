@@ -74,7 +74,7 @@ const main = async () => {
           if (sha.length > 7) {
             sha = sha.substring(0, 7);
           }
-          console.log('here' + JSON.stringify(github));
+          console.log('master' + JSON.stringify(github));
           buildMessage += `${icons[payload.job.status]} ${payload.job.status}:`
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
           buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
