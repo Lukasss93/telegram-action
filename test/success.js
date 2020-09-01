@@ -1,1 +1,1 @@
-process.exit(0)
+return 'All goo'

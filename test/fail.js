@@ -1,1 +1,1 @@
-process.exit(1)
+throw Error('Error occured')
