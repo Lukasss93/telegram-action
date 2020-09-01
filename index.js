@@ -19,6 +19,7 @@ const icons = {
 
 const main = async () => {
   try {
+    
     //get payload
     const payload = github.context.payload;
 
