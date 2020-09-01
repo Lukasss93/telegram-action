@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Send message to Telegram
-        uses: Lukasss93/telegram-action@v1
+        uses: ozanerturk/telegram-action
         if: always()
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
-          TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+          TELEGRAM_TOKEN: TEST
+          TELEGRAM_CHAT: TEST
 
