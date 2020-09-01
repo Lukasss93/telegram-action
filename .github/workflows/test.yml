@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run fail
-      - run: node test/fail.js
+        run: node test/fail.js
       - name: Send message to Telegram
         uses: ozanerturk/telegram-action@master
         if: always()
