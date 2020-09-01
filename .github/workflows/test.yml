@@ -35,7 +35,7 @@ jobs:
       - name: Run fail
         run: node test/fail.js
       - name: Send message to Telegram
-        uses: ozanerturk/telegram-action@master
+        uses: ozanerturk/telegram-action@45ff8ee51abeb11380d65e838f0ac6a19ff78a83
         if: always()
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
