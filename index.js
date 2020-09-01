@@ -135,7 +135,7 @@ function empty(value) {
     } else {
       console.log(error)
       console.log(JSON.stringify(error, undefined, 2));
-      core.setFailed(JSON.stringify(error, undefined, 2));
+      core.setFailed(error.message);
     }
   }
 })();

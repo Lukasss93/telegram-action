@@ -4,7 +4,7 @@ author: 'Luca Patera'
 inputs:
   footer:
     description: 'Message footer'
-    required: fase
+    required: false
   message:
     description: 'Override default message'
     required: false
