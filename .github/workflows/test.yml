@@ -20,11 +20,11 @@ jobs:
       - name: Run success
         run: node test/success.js
       - name: Send message to Telegram
-        uses: ozanerturk/telegram-action@master
+        uses: Lukasss93/telegram-action@master
         if: always()
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
-          TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
         with:
            STATUS: ${{job.status}}  
   fail:
@@ -37,11 +37,11 @@ jobs:
       - name: Run fail
         run: node test/fail.js
       - name: Send message to Telegram
-        uses: ozanerturk/telegram-action@master
+        uses: Lukasss93/telegram-action@master
         if: always()
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAMBOTTOKEN }}
-          TELEGRAM_CHAT: ${{ secrets.TELEGRAMCHATID }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
         with:
            STATUS: ${{job.status}}    
          
