@@ -12,7 +12,7 @@ function empty(value) {
 }
 
 const icons = {
-  failure: "❗",
+  failure: "❌",
   cancelled: "❕",
   success: "✅",
 };
@@ -75,7 +75,7 @@ const main = async () => {
             sha = sha.substring(0, 7);
           }
           let status = core.getInput('STATUS', { required: true })
-          buildMessage += `${icons[status]} ${status}: `
+          buildMessage += `${icons[status]} `
           buildMessage += `<a href="${repo_link}">${repo}</a>`;
           buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
           buildMessage += commit.message;
