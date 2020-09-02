@@ -23,14 +23,9 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.telegram_token }}
           TELEGRAM_CHAT: ${{ secrets.telegram_chat }}
         with: 
-          STATUS: ${{job.status}} # this is required for accessing the status of certain job
-```
-
-You can pass the following optional inputs:
-```yaml
-        with: 
-          footer: 'Append a message to default message'
-          message: 'Override the default message (footer included)'
+          STATUS: ${{job.status}} # Required for accessing the status of certain job
+          footer: 'Append a message to default message' # Optional
+          message: 'Override the default message (footer included)' # Optional
 
 ```
 
@@ -49,6 +44,7 @@ You can pass the following optional inputs:
 
 ## Inputs variables
 
+- **STATUS** *required* `${{job.status}}`
 - **footer** *optional* `string` - Append a message to default message
 - **message** *optional* `string` - Override the default message (footer included)
 
