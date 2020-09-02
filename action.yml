@@ -4,10 +4,13 @@ author: 'Luca Patera'
 inputs:
   footer:
     description: 'Message footer'
-    required: fase
+    required: false
   message:
     description: 'Override default message'
     required: false
+  STATUS:
+    description: 'Job status'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
