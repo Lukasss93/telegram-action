@@ -53,7 +53,7 @@ jobs:
 ##### For Push
 
 ```
-author/repo¹ • hash²
+[status emoji] [author/repo¹] • [actor] • [hash²]
 Commit message
 ```
 >¹ with repo link

@@ -26,6 +26,9 @@ const main = async () => {
         //get event
         const event = github.context.eventName;
 
+        //get actor
+        const actor = github.context.actor;
+
         //get envs
         const telegram_token = process.env.TELEGRAM_TOKEN;
         const telegram_chat = process.env.TELEGRAM_CHAT;
@@ -77,6 +80,7 @@ const main = async () => {
                     let status = core.getInput('STATUS', {required: true})
                     buildMessage += `${icons[status]} `
                     buildMessage += `<a href="${repo_link}">${repo}</a>`;
+                    buildMessage += ` • <a href="https://github.com/${actor}">${actor}</a>`;
                     buildMessage += ` • <a href="${commit.url}">${sha}</a>\n`;
                     buildMessage += commit.message;
 
