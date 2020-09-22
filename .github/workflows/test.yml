@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run success
-        run: node test/success.js
+        run: exit 0
       - name: Send message to Telegram
         uses: Lukasss93/telegram-action@master
         if: always()
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run fail
-        run: node test/fail.js
+        run: exit 1
       - name: Send message to Telegram
         uses: Lukasss93/telegram-action@master
         if: always()

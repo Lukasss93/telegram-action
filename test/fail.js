@@ -1,1 +1,0 @@
-throw Error('Error occured')
