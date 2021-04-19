@@ -13,6 +13,7 @@ async function run(): Promise<void> {
         //get event
         let event = github.context.eventName;
         
+        console.log(event);
         if(!Utils.in_array(event,['push','release'])){
              throw new Error('Invalid github event');
         }

@@ -2,12 +2,12 @@ import sanitizeHtml from "sanitize-html";
 
 export default class Utils {
 
-    public static empty(value):boolean {
+    public static empty(value:any):boolean {
         return value === null || value === undefined || value === [] || value === {} || value === false || value === 0 || value === "";
     }
     
-    public static in_array(needle, $haystack):boolean {
-        return $haystack.includes(needle);
+    public static in_array(needle:any, haystack:Array<any>):boolean {
+        return haystack.includes(needle);
     }
     
     public static sanitize(value:string):string{
