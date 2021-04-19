@@ -1,29 +1,21 @@
-name: CI
+name: Test success
 
 on:
   push:
 
 jobs:
-  success:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run success
         run: exit 0
-      - name: Send message to Telegram
-        uses: ./
-        if: always()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
-        with:
-          status: ${{job.status}}
-  fail:
+  notify:
+    needs: setup
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run fail
-        run: exit 1
       - name: Send message to Telegram
         uses: ./
         if: always()
