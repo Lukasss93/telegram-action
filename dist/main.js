@@ -42,7 +42,6 @@ function run() {
         try {
             //get event
             let event = github.context.eventName;
-            console.log(event);
             if (!Utils_1.default.in_array(event, ['push', 'release'])) {
                 throw new Error('Invalid github event');
             }
