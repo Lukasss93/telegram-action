@@ -2,18 +2,18 @@ name: 'Notify Telegram Action'
 description: 'Notify via Telegram!'
 author: 'Luca Patera'
 inputs:
-  footer:
-    description: 'Message footer'
+  commit_template:
     required: false
-  message:
-    description: 'Override default message'
+    description: 'Commit message template'
+  release_template:
     required: false
-  STATUS:
-    description: 'Job status'
+    description: 'Release message template'
+  status:
     required: true
+    description: 'Job status'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'dist/main.js'
 branding:
   icon: 'message-square'
   color: 'blue'
