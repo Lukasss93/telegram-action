@@ -42,7 +42,6 @@ const Utils_1 = __importDefault(require("./Support/Utils"));
 const NoCommitsError_1 = __importDefault(require("./Exceptions/NoCommitsError"));
 const StatusMessage_1 = __importDefault(require("./Enums/StatusMessage"));
 function run() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //get event
@@ -67,7 +66,7 @@ function run() {
             //get arguments
             const commit_template = Utils_1.default.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
             const release_template = Utils_1.default.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
-            const status = (_a = core.getInput("status", { required: true })) !== null && _a !== void 0 ? _a : null;
+            const status = Utils_1.default.default(core.getInput("status"));
             //initialize repo
             if (payload.repository === undefined) {
                 throw new Error("payload.repository is undefined");
@@ -101,7 +100,7 @@ function run() {
                     let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
                     message = mustache.render(commitTemplateContent, {
                         commits: commits,
-                        status: StatusMessage_1.default[status]
+                        status: Utils_1.default.default(StatusMessage_1.default[status])
                     });
                     break;
                 case "release":

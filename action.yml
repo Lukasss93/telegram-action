@@ -9,7 +9,7 @@ inputs:
     required: false
     description: 'Release message template'
   status:
-    required: true
+    required: false
     description: 'Job status'
 runs:
   using: 'node12'

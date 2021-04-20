@@ -40,7 +40,7 @@ async function run(): Promise<void> {
         //get arguments
         const commit_template = Utils.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
         const release_template = Utils.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
-        const status = core.getInput("status", {required: true}) ?? null;
+        const status = Utils.default(core.getInput("status"));
 
         //initialize repo
         if (payload.repository === undefined) {
@@ -81,7 +81,7 @@ async function run(): Promise<void> {
                 let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
                 message = mustache.render(commitTemplateContent, {
                     commits: commits,
-                    status: StatusMessage[status]
+                    status: Utils.default(StatusMessage[status])
                 });
 
                 break;
