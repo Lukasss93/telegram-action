@@ -39,12 +39,15 @@ async function run(): Promise<void> {
         console.log('getting templates');
 
         //get arguments
-        const commit_template = core.getInput("commit_template") ?? path.join(__dirname, '../templates/commit.mustache');
-        const release_template = core.getInput("release_template") ?? path.join(__dirname, '../templates/release.mustache');
+        const commit_template = core.getInput("commit_template");// ?? path.join(__dirname, '../templates/commit.mustache');
+        const release_template = core.getInput("release_template");// ?? path.join(__dirname, '../templates/release.mustache');
         //const status = core.getInput("status", {required: true}) ?? null;
         
         console.log(commit_template);
         console.log(release_template);
+
+        console.log(path.join(__dirname, '../templates/commit.mustache'));
+        console.log(path.join(__dirname, '../templates/release.mustache'));
 
         //initialize repo
         if (payload.repository === undefined) {
