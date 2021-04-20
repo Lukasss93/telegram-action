@@ -37,9 +37,12 @@ async function run(): Promise<void> {
         }
 
         //get arguments
-        const commit_template = core.getInput("commit_template") ?? path.join(__dirname, '../templates/commit.mustache');
-        const release_template = core.getInput("release_template") ?? path.join(__dirname, '../templates/release.mustache');
+        const commit_template = core.getInput("commit_template", {required:false}) ?? path.join(__dirname, '../templates/commit.mustache');
+        const release_template = core.getInput("release_template", {required:false}) ?? path.join(__dirname, '../templates/release.mustache');
         const status = core.getInput("status", {required: true}) ?? null;
+        
+        console.log(commit_template);
+        console.log(release_template);
 
         //initialize repo
         if (payload.repository === undefined) {
