@@ -40,7 +40,9 @@ const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const Utils_1 = __importDefault(require("./Support/Utils"));
 const NoCommitsError_1 = __importDefault(require("./Exceptions/NoCommitsError"));
+const StatusMessage_1 = __importDefault(require("./Enums/StatusMessage"));
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //get event
@@ -62,13 +64,10 @@ function run() {
             if (Utils_1.default.empty(telegram_chat)) {
                 throw new Error("telegram_chat argument not compiled");
             }
-            console.log('getting templates');
             //get arguments
             const commit_template = Utils_1.default.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
             const release_template = Utils_1.default.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
-            //const status = core.getInput("status", {required: true}) ?? null;
-            console.log(commit_template);
-            console.log(release_template);
+            const status = (_a = core.getInput("status", { required: true })) !== null && _a !== void 0 ? _a : null;
             //initialize repo
             if (payload.repository === undefined) {
                 throw new Error("payload.repository is undefined");
@@ -101,7 +100,8 @@ function run() {
                     //render message
                     let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
                     message = mustache.render(commitTemplateContent, {
-                        commits: commits
+                        commits: commits,
+                        status: StatusMessage_1.default[status]
                     });
                     break;
                 case "release":
@@ -126,6 +126,7 @@ function run() {
                 default:
                     throw new Error("Trigger event not supported.");
             }
+            message = Utils_1.default.sanitize(message);
             //send message via telegram
             yield axios_1.default.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
                 chat_id: telegram_chat,
