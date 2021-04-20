@@ -72,5 +72,8 @@ jobs:
 
 Check this workflow: [test.yml](.github/workflows/test.yml)
 
+## 📃 Changelog
+Please see the [CHANGELOG.md](CHANGELOG.md) for more information on what has changed recently.
+
 ## 📖 License
 Please see the [LICENSE.md](LICENSE) file for more information.
