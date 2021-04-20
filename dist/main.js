@@ -41,7 +41,7 @@ const path = __importStar(require("path"));
 const Utils_1 = __importDefault(require("./Support/Utils"));
 const NoCommitsError_1 = __importDefault(require("./Exceptions/NoCommitsError"));
 function run() {
-    var _a, _b, _c;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //get event
@@ -63,10 +63,13 @@ function run() {
             if (Utils_1.default.empty(telegram_chat)) {
                 throw new Error("telegram_chat argument not compiled");
             }
+            console.log('getting templates');
             //get arguments
             const commit_template = (_a = core.getInput("commit_template")) !== null && _a !== void 0 ? _a : path.join(__dirname, '../templates/commit.mustache');
             const release_template = (_b = core.getInput("release_template")) !== null && _b !== void 0 ? _b : path.join(__dirname, '../templates/release.mustache');
-            const status = (_c = core.getInput("status", { required: true })) !== null && _c !== void 0 ? _c : null;
+            //const status = core.getInput("status", {required: true}) ?? null;
+            console.log(commit_template);
+            console.log(release_template);
             //initialize repo
             if (payload.repository === undefined) {
                 throw new Error("payload.repository is undefined");
