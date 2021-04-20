@@ -39,15 +39,12 @@ async function run(): Promise<void> {
         console.log('getting templates');
 
         //get arguments
-        const commit_template = core.getInput("commit_template");// ?? path.join(__dirname, '../templates/commit.mustache');
-        const release_template = core.getInput("release_template");// ?? path.join(__dirname, '../templates/release.mustache');
+        const commit_template = Utils.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
+        const release_template = Utils.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
         //const status = core.getInput("status", {required: true}) ?? null;
-        
+
         console.log(commit_template);
         console.log(release_template);
-
-        console.log(path.join(__dirname, '../templates/commit.mustache'));
-        console.log(path.join(__dirname, '../templates/release.mustache'));
 
         //initialize repo
         if (payload.repository === undefined) {
@@ -69,11 +66,11 @@ async function run(): Promise<void> {
                     repo_name: repo_name,
                     actor: actor,
                     commit_url: `${repo_url}/commit/${commit.id}`,
-                    commit_sha: Utils.value(function(){
+                    commit_sha: Utils.value(function () {
                         if (commit.id.length > 7) {
                             return commit.id.substring(0, 7);
                         }
-                        
+
                         return commit.id;
                     }),
                     commit_message: commit.message
@@ -87,7 +84,7 @@ async function run(): Promise<void> {
                 //render message
                 let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
                 message = mustache.render(commitTemplateContent, {
-                    commits:commits
+                    commits: commits
                 });
 
                 break;

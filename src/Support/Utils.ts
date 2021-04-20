@@ -25,11 +25,19 @@ export default class Utils {
         return value;
     }
 
-    public static value(callback){
-        if(typeof callback === "function"){
+    public static value(callback: any) {
+        if (typeof callback === "function") {
             return callback();
         }
-        
+
         return callback;
+    }
+
+    public static default(value: any, defaultValue: any = null) {
+        if (this.empty(value)) {
+            return defaultValue;
+        }
+
+        return value;
     }
 }

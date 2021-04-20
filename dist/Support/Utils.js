@@ -30,6 +30,12 @@ class Utils {
         }
         return callback;
     }
+    static default(value, defaultValue = null) {
+        if (this.empty(value)) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
 exports.default = Utils;
 //# sourceMappingURL=Utils.js.map
