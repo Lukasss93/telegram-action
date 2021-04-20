@@ -7,6 +7,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import Utils from "./Support/Utils";
 import NoCommitsError from "./Exceptions/NoCommitsError";
+import StatusMessage from "./Enums/StatusMessage";
 
 async function run(): Promise<void> {
     try {
@@ -36,15 +37,10 @@ async function run(): Promise<void> {
             throw new Error("telegram_chat argument not compiled");
         }
 
-        console.log('getting templates');
-
         //get arguments
         const commit_template = Utils.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
         const release_template = Utils.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
-        //const status = core.getInput("status", {required: true}) ?? null;
-
-        console.log(commit_template);
-        console.log(release_template);
+        const status = core.getInput("status", {required: true}) ?? null;
 
         //initialize repo
         if (payload.repository === undefined) {
@@ -84,7 +80,8 @@ async function run(): Promise<void> {
                 //render message
                 let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
                 message = mustache.render(commitTemplateContent, {
-                    commits: commits
+                    commits: commits,
+                    status: StatusMessage[status]
                 });
 
                 break;
@@ -114,6 +111,8 @@ async function run(): Promise<void> {
             default:
                 throw new Error("Trigger event not supported.");
         }
+
+        message = Utils.sanitize(message);
 
         //send message via telegram
         await axios.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
