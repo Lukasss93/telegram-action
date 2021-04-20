@@ -33,6 +33,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
 const github = __importStar(require("@actions/github"));
+const axios_1 = __importDefault(require("axios"));
+const showdown = __importStar(require("showdown"));
+const mustache = __importStar(require("mustache"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const Utils_1 = __importDefault(require("./Support/Utils"));
 const NoCommitsError_1 = __importDefault(require("./Exceptions/NoCommitsError"));
@@ -43,7 +47,7 @@ function run() {
             //get event
             let event = github.context.eventName;
             if (!Utils_1.default.in_array(event, ['push', 'release'])) {
-                throw new Error('Invalid github event');
+                throw new Error('Trigger event not supported.');
             }
             //get payload
             const payload = github.context.payload;
@@ -52,21 +56,81 @@ function run() {
             //get envs
             const telegram_token = process.env.TELEGRAM_TOKEN;
             const telegram_chat = process.env.TELEGRAM_CHAT;
+            //check envs
+            if (Utils_1.default.empty(telegram_token)) {
+                throw new Error("telegram_token argument not compiled");
+            }
+            if (Utils_1.default.empty(telegram_chat)) {
+                throw new Error("telegram_chat argument not compiled");
+            }
             //get arguments
             const commit_template = (_a = core.getInput("commit_template")) !== null && _a !== void 0 ? _a : path.join(__dirname, '../templates/commit.mustache');
             const release_template = (_b = core.getInput("release_template")) !== null && _b !== void 0 ? _b : path.join(__dirname, '../templates/release.mustache');
-            const status = (_c = core.getInput("status")) !== null && _c !== void 0 ? _c : null;
-            /*
-            let templatePath=path.join(__dirname,'../templates/release.mustache');
-            let templateContent = fs.readFileSync(templatePath, 'utf-8');
-            let output = mustache.render(templateContent, {
-                repo_url:'https://www.google.it',
-                repo_name:'test',
-                tag:'v2.0',
-                type:'stable',
-                body:'<b>Ciao</b>'
-            });*/
-            console.log('OK');
+            const status = (_c = core.getInput("status", { required: true })) !== null && _c !== void 0 ? _c : null;
+            //initialize repo
+            if (payload.repository === undefined) {
+                throw new Error("payload.repository is undefined");
+            }
+            const repo_name = payload.repository.full_name;
+            const repo_url = `https://github.com/${repo_name}`;
+            //initialize message
+            let message = null;
+            //elaborate event
+            switch (event) {
+                case "push":
+                    //get commits
+                    let commits = payload.commits.map(commit => ({
+                        repo_url: repo_url,
+                        repo_name: repo_name,
+                        actor: actor,
+                        commit_url: `${repo_url}/commit/${commit.id}`,
+                        commit_sha: Utils_1.default.value(function () {
+                            if (commit.id.length > 7) {
+                                return commit.id.substring(0, 7);
+                            }
+                            return commit.id;
+                        }),
+                        commit_message: commit.message
+                    }));
+                    //check if no commits
+                    if (commits.length === 0) {
+                        throw new NoCommitsError_1.default();
+                    }
+                    //render message
+                    let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
+                    message = mustache.render(commitTemplateContent, {
+                        commits: commits
+                    });
+                    break;
+                case "release":
+                    let tag_name = payload.release.tag_name;
+                    let tag_url = payload.release.html_url;
+                    let tag_type = payload.release.prerelease ? "beta" : "stable";
+                    //get tag body
+                    let body = payload.release.body;
+                    //convert markdown to html
+                    let converter = new showdown.Converter();
+                    body = converter.makeHtml(body);
+                    //render message
+                    let releaseTemplateContent = fs.readFileSync(release_template, 'utf-8');
+                    message = mustache.render(releaseTemplateContent, {
+                        tag_url: tag_url,
+                        repo_name: repo_name,
+                        tag_name: tag_name,
+                        tag_type: tag_type,
+                        body: body
+                    });
+                    break;
+                default:
+                    throw new Error("Trigger event not supported.");
+            }
+            //send message via telegram
+            yield axios_1.default.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
+                chat_id: telegram_chat,
+                text: message !== null && message !== void 0 ? message : 'Invalid message',
+                parse_mode: "html",
+                disable_web_page_preview: true
+            });
         }
         catch (error) {
             if (error instanceof NoCommitsError_1.default) {

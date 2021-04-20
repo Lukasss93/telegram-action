@@ -24,6 +24,12 @@ class Utils {
         value = value.replace(/\n\n\n/g, "\n\n");
         return value;
     }
+    static value(callback) {
+        if (typeof callback === "function") {
+            return callback();
+        }
+        return callback;
+    }
 }
 exports.default = Utils;
 //# sourceMappingURL=Utils.js.map
