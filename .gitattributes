@@ -1,0 +1,4 @@
+* text=auto
+* text eol=lf
+*.js linguist-vendored
+CHANGELOG.md export-ignore
