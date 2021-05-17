@@ -56,13 +56,16 @@ async function run(): Promise<void> {
         //elaborate event
         switch (event) {
             case "push":
+                
+                Utils.dump(payload);
+                
                 //get commits
                 let commits = payload.commits.map(commit => ({
                     repo_url: repo_url,
                     repo_name: repo_name,
                     actor: actor,
                     commit_url: `${repo_url}/commit/${commit.id}`,
-                    commit_sha: Utils.value(function () {
+                    commit_sha: Utils.value(() => {
                         if (commit.id.length > 7) {
                             return commit.id.substring(0, 7);
                         }
@@ -126,7 +129,7 @@ async function run(): Promise<void> {
         if (error instanceof NoCommitsError) {
             core.warning("No commits found.");
         } else {
-            console.log(JSON.stringify(error, undefined, 2));
+            Utils.dump(error);
             core.setFailed(error.message);
         }
     }

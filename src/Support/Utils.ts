@@ -40,4 +40,8 @@ export default class Utils {
 
         return value;
     }
+
+    public static dump(value: any) {
+        console.log(JSON.stringify(value, undefined, 2));
+    }
 }

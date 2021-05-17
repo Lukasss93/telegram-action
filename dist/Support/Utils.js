@@ -36,6 +36,9 @@ class Utils {
         }
         return value;
     }
+    static dump(value) {
+        console.log(JSON.stringify(value, undefined, 2));
+    }
 }
 exports.default = Utils;
 //# sourceMappingURL=Utils.js.map
