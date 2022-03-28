@@ -13,7 +13,7 @@
   "dependencies": {
     "@actions/core": "^1.2.7",
     "@actions/github": "^5.0.0",
-    "axios": "^0.21.1",
+    "axios": "^0.26.1",
     "mustache": "^4.2.0",
     "sanitize-html": "^2.3.3",
     "showdown": "^1.9.1"
