@@ -20,7 +20,7 @@
         "axios": "^0.21.4",
         "mustache": "^4.2.0",
         "sanitize-html": "^2.7.0",
-        "showdown": "^1.9.1"
+        "showdown": "^2.1.0"
     },
     "devDependencies": {
         "@types/mustache": "^4.1.2",
