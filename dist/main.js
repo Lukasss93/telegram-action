@@ -46,7 +46,7 @@ const Utils_1 = __importDefault(require("./Support/Utils"));
 const NoCommitsError_1 = __importDefault(require("./Exceptions/NoCommitsError"));
 const StatusMessage_1 = __importDefault(require("./Enums/StatusMessage"));
 function run() {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             //get event
@@ -88,13 +88,12 @@ function run() {
             //elaborate event
             switch (event) {
                 case "pull_request":
-                    console.log(payload);
                     const data = {
                         repo_name: (_a = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _a === void 0 ? void 0 : _a.user.login,
-                        title: payload.title,
-                        req_from: (_b = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _b === void 0 ? void 0 : _b.head.ref,
-                        req_to: (_c = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _c === void 0 ? void 0 : _c.base.ref,
-                        pull_req_url: payload.html_url,
+                        title: (_b = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _b === void 0 ? void 0 : _b.title,
+                        req_from: (_c = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _c === void 0 ? void 0 : _c.head.ref,
+                        req_to: (_d = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _d === void 0 ? void 0 : _d.base.ref,
+                        pull_req_url: (_e = payload === null || payload === void 0 ? void 0 : payload.pull_request) === null || _e === void 0 ? void 0 : _e.html_url,
                     };
                     let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
                     message = mustache.render(pullReqTemplateContent, {
