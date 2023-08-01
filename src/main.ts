@@ -72,8 +72,6 @@ async function run(): Promise<void> {
         //elaborate event
         switch (event) {
             case "pull_request":
-                console.log(payload);
-
                 const data = {
                     repo_name: payload?.pull_request?.user.login,
                     title: payload.title,
