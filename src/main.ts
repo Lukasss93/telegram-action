@@ -74,13 +74,12 @@ async function run(): Promise<void> {
             case "pull_request":
                 const data = {
                     repo_name: payload?.pull_request?.user.login,
-                    title: payload.title,
+                    title: payload?.pull_request?.title,
                     req_from: payload?.pull_request?.head.ref,
                     req_to: payload?.pull_request?.base.ref,
-                    pull_req_url: payload.html_url,
+                    pull_req_url: payload?.pull_request?.html_url,
                 };
 
-                
                 let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
 
                 message = mustache.render(pullReqTemplateContent, {
