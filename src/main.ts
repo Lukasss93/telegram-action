@@ -68,7 +68,7 @@ async function run(): Promise<void> {
         switch (event) {
             case "pull_request":
                 console.log(payload);
-                throw new Error(JSON.stringify(payload))
+                throw new Error(JSON.stringify(payload.base.user))
                 break;
             case "push":
                 Utils.dump(payload);
