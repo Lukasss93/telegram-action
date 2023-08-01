@@ -51,6 +51,11 @@ async function run(): Promise<void> {
             core.getInput("release_template"),
             path.join(__dirname, "../templates/release.mustache")
         );
+        const pull_req_template = Utils.default(
+            core.getInput("pull_req_template"),
+            path.join(__dirname, "../templates/pull-req.mustache")
+        );
+
         const status = Utils.default(core.getInput("status"));
 
         //initialize repo
@@ -67,7 +72,22 @@ async function run(): Promise<void> {
         //elaborate event
         switch (event) {
             case "pull_request":
-                throw new Error(JSON.stringify(payload.base.user));
+                console.log(payload);
+
+                const data = {
+                    repo_name: payload?.pull_request?.user.login,
+                    title: payload.title,
+                    req_from: payload?.pull_request?.head.ref,
+                    req_to: payload?.pull_request?.base.ref,
+                    pull_req_url: payload.html_url,
+                };
+
+                let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
+
+                message = mustache.render(pullReqTemplateContent, {
+                    data,
+                    status: Utils.default(StatusMessage[status]),
+                });
                 break;
             case "push":
                 Utils.dump(payload);
