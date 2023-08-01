@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -46,8 +50,8 @@ function run() {
         try {
             //get event
             let event = github.context.eventName;
-            if (!Utils_1.default.in_array(event, ['push', 'release'])) {
-                throw new Error('Trigger event not supported.');
+            if (!Utils_1.default.in_array(event, ["push", "release", "pull_request"])) {
+                throw new Error("Trigger event not supported.");
             }
             //get payload
             const payload = github.context.payload;
@@ -56,6 +60,7 @@ function run() {
             //get envs
             const telegram_token = process.env.TELEGRAM_TOKEN;
             const telegram_chat = process.env.TELEGRAM_CHAT;
+            const telegram_topic = process.env.TELEGRAM_TOPIC;
             //check envs
             if (Utils_1.default.empty(telegram_token)) {
                 throw new Error("telegram_token argument not compiled");
@@ -63,9 +68,12 @@ function run() {
             if (Utils_1.default.empty(telegram_chat)) {
                 throw new Error("telegram_chat argument not compiled");
             }
+            if (Utils_1.default.empty(telegram_topic)) {
+                throw new Error("telegram_topic argument not compiled");
+            }
             //get arguments
-            const commit_template = Utils_1.default.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
-            const release_template = Utils_1.default.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
+            const commit_template = Utils_1.default.default(core.getInput("commit_template"), path.join(__dirname, "../templates/commit.mustache"));
+            const release_template = Utils_1.default.default(core.getInput("release_template"), path.join(__dirname, "../templates/release.mustache"));
             const status = Utils_1.default.default(core.getInput("status"));
             //initialize repo
             if (payload.repository === undefined) {
@@ -77,10 +85,13 @@ function run() {
             let message = null;
             //elaborate event
             switch (event) {
+                case "pull_request":
+                    console.log(payload);
+                    break;
                 case "push":
                     Utils_1.default.dump(payload);
                     //get commits
-                    let commits = payload.commits.map(commit => ({
+                    let commits = payload.commits.map((commit) => ({
                         repo_url: repo_url,
                         repo_name: repo_name,
                         actor: actor,
@@ -91,17 +102,17 @@ function run() {
                             }
                             return commit.id;
                         }),
-                        commit_message: commit.message
+                        commit_message: commit.message,
                     }));
                     //check if no commits
                     if (commits.length === 0) {
                         throw new NoCommitsError_1.default();
                     }
                     //render message
-                    let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
+                    let commitTemplateContent = fs.readFileSync(commit_template, "utf-8");
                     message = mustache.render(commitTemplateContent, {
                         commits: commits,
-                        status: Utils_1.default.default(StatusMessage_1.default[status])
+                        status: Utils_1.default.default(StatusMessage_1.default[status]),
                     });
                     break;
                 case "release":
@@ -114,13 +125,13 @@ function run() {
                     let converter = new showdown.Converter();
                     body = converter.makeHtml(body);
                     //render message
-                    let releaseTemplateContent = fs.readFileSync(release_template, 'utf-8');
+                    let releaseTemplateContent = fs.readFileSync(release_template, "utf-8");
                     message = mustache.render(releaseTemplateContent, {
                         tag_url: tag_url,
                         repo_name: repo_name,
                         tag_name: tag_name,
                         tag_type: tag_type,
-                        body: body
+                        body: body,
                     });
                     break;
                 default:
@@ -130,9 +141,9 @@ function run() {
             //send message via telegram
             yield axios_1.default.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
                 chat_id: telegram_chat,
-                text: message !== null && message !== void 0 ? message : 'Invalid message',
+                text: message !== null && message !== void 0 ? message : "Invalid message",
                 parse_mode: "html",
-                disable_web_page_preview: true
+                disable_web_page_preview: true,
             });
         }
         catch (error) {

@@ -3,8 +3,8 @@ import * as github from "@actions/github";
 import axios from "axios";
 import * as showdown from "showdown";
 import * as mustache from "mustache";
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 import Utils from "./Support/Utils";
 import NoCommitsError from "./Exceptions/NoCommitsError";
 import StatusMessage from "./Enums/StatusMessage";
@@ -14,8 +14,8 @@ async function run(): Promise<void> {
         //get event
         let event = github.context.eventName;
 
-        if (!Utils.in_array(event, ['push', 'release'])) {
-            throw new Error('Trigger event not supported.');
+        if (!Utils.in_array(event, ["push", "release", "pull_request"])) {
+            throw new Error("Trigger event not supported.");
         }
 
         //get payload
@@ -27,6 +27,7 @@ async function run(): Promise<void> {
         //get envs
         const telegram_token = process.env.TELEGRAM_TOKEN;
         const telegram_chat = process.env.TELEGRAM_CHAT;
+        const telegram_topic = process.env.TELEGRAM_TOPIC;
 
         //check envs
         if (Utils.empty(telegram_token)) {
@@ -37,9 +38,19 @@ async function run(): Promise<void> {
             throw new Error("telegram_chat argument not compiled");
         }
 
+        if (Utils.empty(telegram_topic)) {
+            throw new Error("telegram_topic argument not compiled");
+        }
+
         //get arguments
-        const commit_template = Utils.default(core.getInput("commit_template"), path.join(__dirname, '../templates/commit.mustache'));
-        const release_template = Utils.default(core.getInput("release_template"), path.join(__dirname, '../templates/release.mustache'));
+        const commit_template = Utils.default(
+            core.getInput("commit_template"),
+            path.join(__dirname, "../templates/commit.mustache")
+        );
+        const release_template = Utils.default(
+            core.getInput("release_template"),
+            path.join(__dirname, "../templates/release.mustache")
+        );
         const status = Utils.default(core.getInput("status"));
 
         //initialize repo
@@ -51,16 +62,18 @@ async function run(): Promise<void> {
         const repo_url = `https://github.com/${repo_name}`;
 
         //initialize message
-        let message: string | null = null;
+        let message: any = null;
 
         //elaborate event
         switch (event) {
+            case "pull_request":
+                console.log(payload);
+                break;
             case "push":
-                
                 Utils.dump(payload);
-                
+
                 //get commits
-                let commits = payload.commits.map(commit => ({
+                let commits = payload.commits.map((commit) => ({
                     repo_url: repo_url,
                     repo_name: repo_name,
                     actor: actor,
@@ -72,7 +85,7 @@ async function run(): Promise<void> {
 
                         return commit.id;
                     }),
-                    commit_message: commit.message
+                    commit_message: commit.message,
                 }));
 
                 //check if no commits
@@ -81,10 +94,10 @@ async function run(): Promise<void> {
                 }
 
                 //render message
-                let commitTemplateContent = fs.readFileSync(commit_template, 'utf-8');
+                let commitTemplateContent = fs.readFileSync(commit_template, "utf-8");
                 message = mustache.render(commitTemplateContent, {
                     commits: commits,
-                    status: Utils.default(StatusMessage[status])
+                    status: Utils.default(StatusMessage[status]),
                 });
 
                 break;
@@ -101,13 +114,13 @@ async function run(): Promise<void> {
                 body = converter.makeHtml(body);
 
                 //render message
-                let releaseTemplateContent = fs.readFileSync(release_template, 'utf-8');
+                let releaseTemplateContent = fs.readFileSync(release_template, "utf-8");
                 message = mustache.render(releaseTemplateContent, {
                     tag_url: tag_url,
                     repo_name: repo_name,
                     tag_name: tag_name,
                     tag_type: tag_type,
-                    body: body
+                    body: body,
                 });
 
                 break;
@@ -120,12 +133,11 @@ async function run(): Promise<void> {
         //send message via telegram
         await axios.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
             chat_id: telegram_chat,
-            text: message ?? 'Invalid message',
+            text: message ?? "Invalid message",
             parse_mode: "html",
-            disable_web_page_preview: true
+            disable_web_page_preview: true,
         });
-
-    } catch (error) {
+    } catch (error: any) {
         if (error instanceof NoCommitsError) {
             core.warning("No commits found.");
         } else {

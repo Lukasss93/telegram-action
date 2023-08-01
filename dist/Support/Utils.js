@@ -12,7 +12,7 @@ class Utils {
         return haystack.includes(needle);
     }
     static sanitize(value) {
-        value = sanitize_html_1.default(value, {
+        value = (0, sanitize_html_1.default)(value, {
             allowedTags: ["b", "strong", "i", "a", "code", "pre", "li"],
             allowedAttributes: {
                 "a": ["href"]
