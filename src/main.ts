@@ -69,10 +69,18 @@ async function run(): Promise<void> {
         //initialize message
         let message: any = null;
 
+        interface PullRequestData {
+            repo_name: string;
+            title: string;
+            req_from: string;
+            req_to: string;
+            pull_req_url?: string;
+        }
+        let data: PullRequestData | any;
         //elaborate event
         switch (event) {
             case "pull_request":
-                const data = {
+                data = {
                     repo_name: payload?.pull_request?.user.login,
                     title: payload?.pull_request?.title,
                     req_from: payload?.pull_request?.head.ref,
@@ -148,13 +156,28 @@ async function run(): Promise<void> {
 
         message = Utils.sanitize(message);
 
-        //send message via telegram
-        await axios.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, {
+        interface TelegramOptions {
+            chat_id: string | undefined;
+            text: string;
+            parse_mode: string;
+            disable_web_page_preview: boolean;
+            message_thread_id?: string;
+            reply_markup?: object;
+        }
+
+        const telegramOptions: TelegramOptions = {
             chat_id: telegram_chat,
             text: message ?? "Invalid message",
             parse_mode: "html",
             disable_web_page_preview: true,
-        });
+        };
+
+        if (event === "pull_request") {
+            telegramOptions.message_thread_id = telegram_topic;
+            telegramOptions.reply_markup = { keyboard: [[{ text: "github", url: data.pull_req_url }]] };
+        }
+        //send message via telegram
+        await axios.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, telegramOptions);
     } catch (error: any) {
         if (error instanceof NoCommitsError) {
             core.warning("No commits found.");
