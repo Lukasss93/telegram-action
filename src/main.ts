@@ -149,6 +149,12 @@ async function run(): Promise<void> {
                 throw new Error("Trigger event not supported.");
         }
 
+
+
+
+
+        
+
         message = Utils.sanitize(message);
 
         interface TelegramOptions {
