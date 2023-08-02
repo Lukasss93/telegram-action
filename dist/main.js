@@ -162,7 +162,7 @@ function run() {
             };
             if (event === "pull_request") {
                 telegramOptions.message_thread_id = telegram_topic;
-                telegramOptions.reply_markup = { keyboard: [[{ text: "github", url: data.pull_req_url }]] };
+                telegramOptions.reply_markup = { inline_keyboard: [[{ text: "github", url: data.pull_req_url }]] };
             }
             //send message via telegram
             yield axios_1.default.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, telegramOptions);

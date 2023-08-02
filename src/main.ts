@@ -83,7 +83,6 @@ async function run(): Promise<void> {
                     action: payload.action,
                 };
 
-
                 let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
 
                 message = mustache.render(pullReqTemplateContent, {
@@ -170,7 +169,7 @@ async function run(): Promise<void> {
 
         if (event === "pull_request") {
             telegramOptions.message_thread_id = telegram_topic;
-            telegramOptions.reply_markup = { keyboard: [[{ text: "github", url: data.pull_req_url }]] };
+            telegramOptions.reply_markup = { inline_keyboard: [[{ text: "github", url: data.pull_req_url }]] };
         }
 
         //send message via telegram
