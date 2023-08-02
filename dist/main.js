@@ -159,7 +159,6 @@ function run() {
                 text: message !== null && message !== void 0 ? message : "Invalid message",
                 parse_mode: "html",
                 disable_web_page_preview: true,
-                message_thread_id: telegram_topic,
             };
             if (event === "pull_request") {
                 telegramOptions.message_thread_id = telegram_topic;
