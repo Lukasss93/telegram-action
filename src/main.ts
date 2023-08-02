@@ -83,7 +83,7 @@ async function run(): Promise<void> {
                     action: payload.action,
                 };
 
-                
+
                 let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
 
                 message = mustache.render(pullReqTemplateContent, {
@@ -166,7 +166,6 @@ async function run(): Promise<void> {
             text: message ?? "Invalid message",
             parse_mode: "html",
             disable_web_page_preview: true,
-            message_thread_id: telegram_topic,
         };
 
         if (event === "pull_request") {
