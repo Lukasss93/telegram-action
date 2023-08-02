@@ -71,6 +71,9 @@ async function run(): Promise<void> {
         let message: any = null;
 
         let data: any;
+        throw new Error(
+            JSON.stringify([payload?.pull_request?._links.commits, payload?.pull_request?._links.comments])
+        );
         //elaborate event
         switch (event) {
             case "pull_request":
