@@ -176,7 +176,9 @@ async function run(): Promise<void> {
             telegramOptions.message_thread_id = telegram_topic;
             telegramOptions.reply_markup = { keyboard: [[{ text: "github", url: data.pull_req_url }]] };
         }
-        throw new Error(JSON.stringify(telegramOptions))
+        throw new Error(JSON.stringify(telegramOptions));
+
+        
         //send message via telegram
         await axios.post(`https://api.telegram.org/bot${telegram_token}/sendMessage`, telegramOptions);
     } catch (error: any) {
@@ -188,6 +190,5 @@ async function run(): Promise<void> {
         }
     }
 }
-
 
 run();
