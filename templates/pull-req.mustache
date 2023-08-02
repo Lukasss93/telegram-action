@@ -1,8 +1,10 @@
 {{#data}}
 
-🆕 New Pull Request #{{pull_req_number}} {{action}}
+🆕 New Pull Request <code>#{{pull_req_number}}</code> 
 
-Title: <a href="{{{pull_req_url}}}">{{title}}</a>
+Action: <code>{{action.toUpperCase()}}</code>
+
+Commit: <b>{{title}}</b>
 
 Pull request from <code>{{req_from}}</code> to <code>{{req_to}}</code>
 
