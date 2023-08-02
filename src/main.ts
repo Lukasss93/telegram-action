@@ -83,6 +83,7 @@ async function run(): Promise<void> {
                     action: payload.action,
                 };
 
+                
                 let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
 
                 message = mustache.render(pullReqTemplateContent, {
