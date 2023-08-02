@@ -8,6 +8,7 @@ import * as path from "path";
 import Utils from "./Support/Utils";
 import NoCommitsError from "./Exceptions/NoCommitsError";
 import StatusMessage from "./Enums/StatusMessage";
+import PullRequestMessage from "./Enums/PullRequestMessage";
 
 async function run(): Promise<void> {
     try {
@@ -74,10 +75,9 @@ async function run(): Promise<void> {
         switch (event) {
             case "pull_request":
                 data = {
-                    repo_name: payload?.pull_request?.user.login,
                     title: payload?.pull_request?.title,
-                    req_from: payload?.pull_request?.head.ref,
-                    req_to: payload?.pull_request?.base.ref,
+                    repo_name: payload?.pull_request?.user.login,
+                    branch: payload?.pull_request?.head.ref,
                     pull_req_url: payload?.pull_request?.html_url,
                     pull_req_number: payload?.pull_request?.number,
                     action: payload.action,
@@ -87,7 +87,7 @@ async function run(): Promise<void> {
 
                 message = mustache.render(pullReqTemplateContent, {
                     data,
-                    status: Utils.default(StatusMessage[status]),
+                    status: Utils.default(PullRequestMessage[data.action]),
                 });
                 break;
             case "push":
