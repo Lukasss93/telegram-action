@@ -69,14 +69,7 @@ async function run(): Promise<void> {
         //initialize message
         let message: any = null;
 
-        interface PullRequestData {
-            repo_name: string;
-            title: string;
-            req_from: string;
-            req_to: string;
-            pull_req_url?: string;
-        }
-        let data: PullRequestData | any;
+        let data: any;
         //elaborate event
         switch (event) {
             case "pull_request":
@@ -86,6 +79,7 @@ async function run(): Promise<void> {
                     req_from: payload?.pull_request?.head.ref,
                     req_to: payload?.pull_request?.base.ref,
                     pull_req_url: payload?.pull_request?.html_url,
+                    pull_req_number: payload.number,
                 };
 
                 let pullReqTemplateContent = fs.readFileSync(pull_req_template, "utf-8");
