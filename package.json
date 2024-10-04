@@ -23,7 +23,7 @@
         "showdown": "^1.9.1"
     },
     "devDependencies": {
-        "@types/mustache": "^4.1.2",
+        "@types/mustache": "^4.2.5",
         "@types/node": "^15.14.9",
         "@types/sanitize-html": "^2.6.2",
         "@types/showdown": "^1.9.4",
